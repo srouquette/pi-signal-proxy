@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  caddy:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+      - 9050:9050
+    volumes:
+      - ./caddy.json:/etc/caddy/caddy.json:ro
+      - caddy_config:/config
+      - caddy_data:/data
+    command: caddy run --config /etc/caddy/caddy.json
+    environment:
+      DOMAIN: "${DOMAIN}"
+      EMAIL: "${EMAIL}"
+      LOG_FILE: "/data/access.log"
+
+volumes:
+  caddy_config:
+  caddy_data:
